@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+set(ProjectB_VERSION_MAJOR "@PROJECT_VERSION_MAJOR@")
+set(ProjectB_VERSION_MINOR "@PROJECT_VERSION_MAJOR@")
+set(ProjectB_VERSION_PATCH "@PROJECT_VERSION_MAJOR@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/project-b-targets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/project-b-doxytags.cmake" OPTIONAL)
