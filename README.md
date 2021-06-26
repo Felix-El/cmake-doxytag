@@ -1,10 +1,11 @@
 <!-- omit in toc -->
 # Doxytag.cmake
 
-A user-friendly `FindDoxygen.cmake` wrapper that helps you link Doxygen documentation across projects.
+A user-friendly extension to `Doxygen` for CMake that helps you link Doxygen
+documentation across projects.
 
 - [About](#about)
-- [Two-Project Example](#two-project-example)
+- [Minimal Example](#minimal-example)
   - [Project A](#project-a)
   - [Project B](#project-b)
 - [Conclusion](#conclusion)
@@ -13,25 +14,25 @@ A user-friendly `FindDoxygen.cmake` wrapper that helps you link Doxygen document
 
 Doxygen is a well-known and commonly used documentation generator that has been
 integrated with CMake for many years. While `FindDoxygen.cmake` covers most of
-what you might ever need from Doxygen, it does not provide a direct way to
-link related projects' documentation. This is where `Doxytag.cmake` can help.
+what you might ever need from Doxygen, it does not provide a CMake-ish way of
+linking documentation from related projects. This is where `Doxytag.cmake` can help.
 
-The ability to link HTML documentation is a feature of Doxygen itself. A `Doxyfile`
-can specifcy the variable `GENERATE_TAGFILE` to export a tagfile and/or
-`TAGFILES` to import existing tagfiles.
+The ability to link HTML documentation is a feature of Doxygen itself. The Doxygen
+configuration file - `Doxyfile` - can specifcy the variable `GENERATE_TAGFILE=...` to
+have Doxygen export a `tagfile` and/or `TAGFILES=...` to import existing tagfiles.
 These variables have been long accessible for direct manipulation through the Doxygen
 CMake module. However, with a growing number of projects it becomes a pain to
 keep track of which tagfiles to include from which location and where the corresponding
 HTML documentation resides.
 
-The `Doxytag.cmake` module brings in two macros which help you takle this problem
-the CMake way - using targets and dependencies between them.
+The `Doxytag.cmake` module brings in two macros which help you takle this problem the
+CMake way - using targets and dependencies between them.
 
 Just like you are used to define a library (target) in one project and link to it from
-another, you will be able to create a Doxytag target in one project and link to it
-from another Doxytag target.
+another, you will be able to create a documentation target in one project and link to it
+from the documentation target of a dependent project.
 
-## Two-Project Example
+## Minimal Example
 
 Let's look at how to link a hypothetical `ProjectB` to `ProjectA` documentation-wise.
 
@@ -54,7 +55,7 @@ Let's look at how to link a hypothetical `ProjectB` to `ProjectA` documentation-
 
     This will build the documentation and export a tagfile, however has only few benefits over `doxygen_add_docs()` until we make use of that.
 
-3. Export the Doxytag targets for downstream projects. We begin by having Doxytag generate part of the export config for us and install it to the prefix.
+3. Export the Doxytag targets for downstream projects. We begin by having Doxytag generate part of the export config for us and install it.
 
         doxytag_export(
             TARGETS docs
@@ -63,7 +64,7 @@ Let's look at how to link a hypothetical `ProjectB` to `ProjectA` documentation-
             NAMESPACE "${PROJECT_NAME}"
         )
 
-Since this export config needs to be read by downstream projects, we have to make sure it gets included:
+Since this export config will be read by downstream projects, we have to make sure it gets installed:
 
         include(CMakePackageConfigHelpers)
         configure_package_config_file(
@@ -133,7 +134,7 @@ known to ProjectB, we can continue.
             NAMESPACE "${PROJECT_NAME}"
         )
 
-Since this export config needs to be read by downstream projects, we have to make sure it gets included:
+Since this export config will be read by downstream projects, we have to make sure it gets installed:
 
         include(CMakePackageConfigHelpers)
         configure_package_config_file(

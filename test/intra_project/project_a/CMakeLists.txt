@@ -50,7 +50,7 @@ if(BUILD_DOCS)
   doxytag_add_docs(${PROJECT_NAME}-docs ALL
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    INSTALL "${CMAKE_INSTALL_FULL_DOCDIR}"
+    INSTALL "${CMAKE_INSTALL_DOCDIR}"
   )
 endif()
 
